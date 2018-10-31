@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Repository 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.demo.dao.SEventsDao" >
+  <resultMap id="BaseResultMap" type="com.example.demo.Entity.SEvents" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="e_name" property="eName" jdbcType="VARCHAR"/>
+    <result column="e_time" property="eTime" jdbcType="TIMESTAMP"/>
+    <result column="site_id" property="siteId" jdbcType="INTEGER"/>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, e_name, e_time, site_id
+  </sql>
+  <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from events
+    where id = #{id}
+  </select>
+  
+    <select id="findAll" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    	from events
+  </select>
+
+
+</mapper>

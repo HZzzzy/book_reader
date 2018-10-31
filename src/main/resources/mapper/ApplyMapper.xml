@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Repository 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.demo.dao.ApplyDao" >
+  <resultMap id="BaseResultMap" type="com.example.demo.Entity.Apply" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR"></result>
+    <result column="event1_id" property="event1Id" jdbcType="INTEGER"></result>
+    <result column="event2_id" property="event2Id" jdbcType="INTEGER"></result>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, name, event1_id, event2_id
+  </sql>
+  <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from apply
+    where id = #{id}
+  </select>
+  
+  <select id="findByParam" resultType="java.util.Map">
+    SELECT
+	  a.id, a.`name`, e.e_name ename, e.e_time etime, s.address
+    FROM
+	  apply a
+    LEFT JOIN `events` e ON a.event1_id = e.id
+    OR a.event2_id = e.id
+    LEFT JOIN site s ON e.site_id = s.id
+    <where>
+      <if test="likeName != null">
+        AND a.name LIKE CONCAT(CONCAT('%', #{likeName}), '%')
+      </if>
+      <if test="siteId != null">
+        AND s.id = #{siteId}
+      </if>
+    </where>
+  </select>
+
+  <insert id="insertSelective" parameterType="com.example.demo.Entity.Apply" useGeneratedKeys="true" keyProperty="id">
+    insert into apply
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="event1Id != null" >
+        event1_id,
+      </if>
+      <if test="event2Id != null" >
+        event2_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="event1Id != null" >
+        #{event1Id,jdbcType=INTEGER},
+      </if>
+      <if test="event2Id != null" >
+        #{event2Id,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+
+</mapper>
