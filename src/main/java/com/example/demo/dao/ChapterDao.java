@@ -1,7 +1,9 @@
 package com.example.demo.dao;
 
 import com.example.demo.Entity.Chapter;
+import org.apache.ibatis.annotations.Mapper;
 
+@Mapper
 public interface ChapterDao {
     int deleteByPrimaryKey(Long id);
 

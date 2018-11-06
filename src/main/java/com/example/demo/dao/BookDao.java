@@ -1,7 +1,11 @@
 package com.example.demo.dao;
 
 import com.example.demo.Entity.Book;
+import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
+@Mapper
 public interface BookDao {
     int deleteByPrimaryKey(Long id);
 
@@ -9,7 +13,9 @@ public interface BookDao {
 
     int insertSelective(Book record);
 
-    Book selectByPrimaryKey(Long id);
+    Book selectById(Long id);
+
+    List<Book> findList(Book book);
 
     int updateByPrimaryKeySelective(Book record);
 
